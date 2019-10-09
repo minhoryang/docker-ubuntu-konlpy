@@ -1,6 +1,5 @@
 # ubuntu
 FROM ubuntu:latest
-LABEL maintainer="Jamie Seol <theeluwin@gmail.com>"
 
 # init
 RUN apt-get update && \
@@ -20,8 +19,15 @@ RUN apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
 # install konlpy
-RUN pip3 install jpype1-py3 konlpy
+RUN pip3 install jpype1-py3 #konlpy
 RUN curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh | bash -s
 
 # entry
 ENTRYPOINT ["python3"]
+
+# konlpy sandbox
+ENV LC_ALL=C.UTF-8
+RUN pip3 install JPype1==0.7.0 pytest
+ADD ./konlpy /sandbox
+RUN cd /sandbox && \
+    python setup.py install
